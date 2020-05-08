@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="WSL2报错：参考对象类型不支持尝试的操作, WULLING">
+    <meta name="keywords" content="PowerShell中提示无法执行Script, WULLING">
     <meta name="description" content="道路对了，就不怕遥远">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>WSL2报错：参考对象类型不支持尝试的操作 | WULLING</title>
+    <title>PowerShell中提示无法执行Script | WULLING</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -202,12 +202,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">WSL2报错：参考对象类型不支持尝试的操作</h1>
+                    <h1 class="description center-align post-title">PowerShell中提示无法执行Script</h1>
                 </div>
             </div>
         </div>
@@ -332,8 +332,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/WSL2/">
-                                <span class="chip bg-color">WSL2</span>
+                            <a href="/tags/PowerShell/">
+                                <span class="chip bg-color">PowerShell</span>
+                            </a>
+                        
+                            <a href="/tags/Script/">
+                                <span class="chip bg-color">Script</span>
                             </a>
                         
                     </div>
@@ -357,7 +361,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-02-08
+                    2020-02-10
                 </div>
                 
 
@@ -366,14 +370,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    127
+                    626
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
 
@@ -383,23 +387,67 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <blockquote>
-<p>转载：Ryan（版权属于）</p>
-<p>本文链接：<a href="https://kkp.disk.st/4608.html" target="_blank" rel="noopener">https://kkp.disk.st/4608.html</a></p>
+                <p><strong>问题描述：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/wulling1024/Picture-bed@master/img202005/20200508220730.png" alt></p>
+<blockquote>
+<p>PowerShell’s execution policy is a safety feature that controls the conditions under which PowerShell loads configuration files and runs scripts. This feature helps prevent the execution of malicious scripts.</p>
 </blockquote>
-<p>突然发现WSL无法使用，Ubuntu无法启动</p>
-<pre class="line-numbers language-powershell"><code class="language-powershell"><span class="token function">PS</span> C:\WINDOWS\system32> wsl<span class="token punctuation">.</span>exe <span class="token operator">--</span>shutdown
-<span class="token function">PS</span> C:\WINDOWS\system32> wsl<span class="token punctuation">.</span>exe
-The attempted operation is not supported <span class="token keyword">for</span> the <span class="token function">type</span> of object referenced<span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>根据<a href="https://github.com/microsoft/WSL2-Linux-Kernel/issues?page=1&q=is%3Aissue+is%3Aopen" target="_blank" rel="noopener">Github issue</a>可知是WSL2目前不兼容VPN类应用（我安装了EasyConnect），复位 <strong>winsock</strong> 配置并重启计算机就可以了</p>
-<pre class="line-numbers language-powershell"><code class="language-powershell"><span class="token function">PS</span> C:\WINDOWS\system32> netsh winsock reset
-
-Sucessfully reset the Winsock Catalog<span class="token punctuation">.</span>
-You must restart the computer in order to complete the reset<span class="token punctuation">.</span>
-
-<span class="token function">PS</span> C:\WINDOWS\system32> wsl<span class="token punctuation">.</span>exe
-root@TIGERHOMEPC <span class="token operator">/</span>mnt<span class="token operator">/</span>c<span class="token operator">/</span>Windows<span class="token operator">/</span>System32
-<span class="token comment" spellcheck="true"># exit</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>解决方案：</strong></p>
+<p>1、要获得当前PowerShell会话的有效执行策略</p>
+<pre class="line-numbers language-powershell"><code class="language-powershell">Get<span class="token operator">-</span>ExecutionPolicy<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2、获取所有影响当前会话的执行策略，并按优先顺序显示它们</p>
+<pre class="line-numbers language-powershell"><code class="language-powershell">Get<span class="token operator">-</span>ExecutionPolicy <span class="token operator">-</span>List<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>3、更改执行策略</p>
+<pre class="line-numbers language-powershell"><code class="language-powershell"><span class="token comment" spellcheck="true"># Set-ExecutionPolicy -ExecutionPolicy &lt;PolicyName> -Scope &lt;scope></span>
+<span class="token function">Set</span><span class="token operator">-</span>ExecutionPolicy <span class="token operator">-</span>ExecutionPolicy RemoteSigned <span class="token operator">-</span>Scope CurrentUser<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="PowerShell-execution-policies"><a href="#PowerShell-execution-policies" class="headerlink" title="PowerShell execution policies"></a>PowerShell execution policies</h2><p>这些策略只在Windows平台上执行。PowerShell具体执行策略如下：</p>
+<h3 id="AllSigned"><a href="#AllSigned" class="headerlink" title="AllSigned"></a>AllSigned</h3><ul>
+<li>Scripts can run.</li>
+<li>Requires that all scripts and configuration files be signed by a trusted publisher, including scripts that you write on the local computer.</li>
+<li>Prompts you before running scripts from publishers that you haven’t yet classified as trusted or untrusted.</li>
+<li>Risks running signed, but malicious, scripts.</li>
+</ul>
+<h3 id="Bypass"><a href="#Bypass" class="headerlink" title="Bypass"></a>Bypass</h3><ul>
+<li>Nothing is blocked and there are no warnings or prompts.</li>
+<li>This execution policy is designed for configurations in which a PowerShell script is built in to a larger application or for configurations in which PowerShell is the foundation for a program that has its own security model.</li>
+</ul>
+<h3 id="Default"><a href="#Default" class="headerlink" title="Default"></a>Default</h3><ul>
+<li>Sets the default execution policy.</li>
+<li><strong>Restricted</strong> for Windows clients.</li>
+<li><strong>RemoteSigned</strong> for Windows servers.</li>
+</ul>
+<h3 id="RemoteSigned"><a href="#RemoteSigned" class="headerlink" title="RemoteSigned"></a>RemoteSigned</h3><ul>
+<li>The default execution policy for Windows server computers.</li>
+<li>Scripts can run.</li>
+<li>Requires a digital signature from a trusted publisher on scripts and configuration files that are downloaded from the internet which includes email and instant messaging programs.</li>
+<li>Doesn’t require digital signatures on scripts that are written on the local computer and not downloaded from the internet.</li>
+<li>Runs scripts that are downloaded from the internet and not signed, if the scripts are unblocked, such as by using the cmdlet.<code>Unblock-File</code></li>
+<li>Risks running unsigned scripts from sources other than the internet and signed scripts that could be malicious.</li>
+</ul>
+<h3 id="Restricted"><a href="#Restricted" class="headerlink" title="Restricted"></a>Restricted</h3><ul>
+<li>The default execution policy for Windows client computers.</li>
+<li>Permits individual commands, but does not allow scripts.</li>
+<li>Prevents running of all script files, including formatting and configuration files ()<code>.ps1xml</code>, module script files ()<code>.psm1</code>, and PowerShell profiles ()<code>.ps1</code>.</li>
+</ul>
+<h3 id="Undefined"><a href="#Undefined" class="headerlink" title="Undefined"></a>Undefined</h3><ul>
+<li>There is no execution policy set in the current scope.</li>
+<li>If the execution policy in all scopes is <strong>Undefined</strong>, the effective execution policy is <strong>Restricted</strong>, which is the default execution policy.</li>
+</ul>
+<h3 id="Unrestricted"><a href="#Unrestricted" class="headerlink" title="Unrestricted"></a>Unrestricted</h3><ul>
+<li>The default execution policy for non-Windows computers and cannot be changed.</li>
+<li>Unsigned scripts can run. There is a risk of running malicious scripts.</li>
+<li>Warns the user before running scripts and configuration files that are not from the local intranet zone.</li>
+</ul>
+<h2 id="Execution-policy-scope"><a href="#Execution-policy-scope" class="headerlink" title="Execution policy scope"></a>Execution policy scope</h2><p>设置仅在特定范围内有效的执行策略</p>
+<p>范围值按优先顺序列出。优先级更高的策略在当前会话中有效，即使更严格的策略被设置为优先级更低的策略。</p>
+<h3 id="MachinePolicy"><a href="#MachinePolicy" class="headerlink" title="MachinePolicy"></a>MachinePolicy</h3><p>Set by a Group Policy for all users of the computer.</p>
+<h3 id="UserPolicy"><a href="#UserPolicy" class="headerlink" title="UserPolicy"></a>UserPolicy</h3><p>Set by a Group Policy for the current user of the computer.</p>
+<h3 id="Process"><a href="#Process" class="headerlink" title="Process"></a>Process</h3><p>The <strong>Process</strong> scope only affects the current PowerShell session. The execution policy is saved in the environment variable , rather than the registry. When the PowerShell session is closed, the variable and value are deleted.<code>$env:PSExecutionPolicyPreference</code></p>
+<h3 id="CurrentUser"><a href="#CurrentUser" class="headerlink" title="CurrentUser"></a>CurrentUser</h3><p>The execution policy affects only the current user. It’s stored in the <strong>HKEY_CURRENT_USER</strong> registry subkey.</p>
+<h3 id="LocalMachine"><a href="#LocalMachine" class="headerlink" title="LocalMachine"></a>LocalMachine</h3><p>The execution policy affects all users on the current computer. It’s stored in the <strong>HKEY_LOCAL_MACHINE</strong> registry subkey.</p>
+<blockquote>
+<p>参考：<a href="https://docs.microsoft.com/zh-cn/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7" target="_blank" rel="noopener">https://docs.microsoft.com/zh-cn/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7</a></p>
+</blockquote>
 
             </div>
             <hr/>
@@ -425,7 +473,7 @@ root@TIGERHOMEPC <span class="token operator">/</span>mnt<span class="token oper
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://wulling1024.github.io/2020/02/08/202002/wsl2-bao-cuo-can-kao-dui-xiang-lei-xing-bu-zhi-chi/">https://wulling1024.github.io/2020/02/08/202002/wsl2-bao-cuo-can-kao-dui-xiang-lei-xing-bu-zhi-chi/</a>
+                    <a href="https://wulling1024.github.io/2020/02/10/202002/powershell-de-zhi-xing-ce-lue/">https://wulling1024.github.io/2020/02/10/202002/powershell-de-zhi-xing-ce-lue/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -463,8 +511,12 @@ root@TIGERHOMEPC <span class="token operator">/</span>mnt<span class="token oper
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/WSL2/">
-                                    <span class="chip bg-color">WSL2</span>
+                                <a href="/tags/PowerShell/">
+                                    <span class="chip bg-color">PowerShell</span>
+                                </a>
+                            
+                                <a href="/tags/Script/">
+                                    <span class="chip bg-color">Script</span>
                                 </a>
                             
                         </div>
@@ -632,9 +684,10 @@ root@TIGERHOMEPC <span class="token operator">/</span>mnt<span class="token oper
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/02/10/202002/powershell-de-zhi-xing-ce-lue/">
                     <div class="card-image">
@@ -655,9 +708,9 @@ PowerShell’s execution policy is a safety feature that controls the conditions
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-10
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-10
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -670,6 +723,7 @@ PowerShell’s execution policy is a safety feature that controls the conditions
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -692,34 +746,37 @@ PowerShell’s execution policy is a safety feature that controls the conditions
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/02/06/202002/spring-zhong-shi-yong-shi-wu-transaction/">
+                <a href="/2020/02/08/202002/wsl2-bao-cuo-can-kao-dui-xiang-lei-xing-bu-zhi-chi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Spring中的事务">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="WSL2报错：参考对象类型不支持尝试的操作">
                         
-                        <span class="card-title">Spring中的事务</span>
+                        <span class="card-title">WSL2报错：参考对象类型不支持尝试的操作</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            使用配置1、事务管理机制事务管理在系统开发中是不可缺少的一部分，Spring提供了很好事务管理机制，主要分为编程式事务和声明式事务两种。
-编程式事务：是指在代码中手动的管理事务的提交、回滚等操作，代码侵入性比较强，如下示例：
-try {
- 
+                            
+转载：Ryan（版权属于）
+本文链接：https://kkp.disk.st/4608.html
+
+突然发现WSL无法使用，Ubuntu无法启动
+PS C:\WINDOWS\system32> wsl.exe --shutdown
+PS 
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-08
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/后台框架/" class="post-category">
-                                    后台框架
+                            <a href="/categories/Tools/" class="post-category">
+                                    Tools
                                 </a>
                             
                             
@@ -729,12 +786,8 @@ try {
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Spring/">
-                        <span class="chip bg-color">Spring</span>
-                    </a>
-                    
-                    <a href="/tags/Transaction/">
-                        <span class="chip bg-color">Transaction</span>
+                    <a href="/tags/WSL2/">
+                        <span class="chip bg-color">WSL2</span>
                     </a>
                     
                 </div>
