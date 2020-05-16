@@ -397,7 +397,7 @@
 <h3 id="什么是-MVCC"><a href="#什么是-MVCC" class="headerlink" title="什么是 MVCC"></a>什么是 MVCC</h3><p><code>MVCC (Multiversion Concurrency Control)</code> 中文全程叫<strong>多版本并发控制</strong>，是现代数据库（包括 <code>MySQL</code>、<code>Oracle</code>、<code>PostgreSQL</code> 等）引擎实现中常用的处理读写冲突的手段，<strong>目的在于提高数据库高并发场景下的吞吐性能</strong>。</p>
 <p>如此一来不同的事务在并发过程中，<code>SELECT</code> 操作可以不加锁而是通过 <code>MVCC</code> 机制读取指定的版本历史记录，并通过一些手段保证保证读取的记录值符合事务所处的隔离级别，从而解决并发场景下的读写冲突。</p>
 <p>下面举一个多版本读的例子，例如两个事务 <code>A</code> 和 <code>B</code> 按照如下顺序进行更新和读取操作</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/698983/1577876810051-c072ed0c-523d-432b-be41-ee06cd18efa9.jpeg" alt></p>
+<p><img src="https://gitee.com/wulling1024/Picture-bed/raw/master/img/20200516111707.png" alt></p>
 <p>在事务 <code>A</code> 提交前后，事务 <code>B</code> 读取到的 <code>x</code> 的值是什么呢？答案是：事务 <code>B</code> 在不同的隔离级别下，读取到的值不一样。</p>
 <ol>
 <li>如果事务 <code>B</code> 的隔离级别是读未提交（RU），那么两次读取均读取到 <code>x</code> 的最新值，即 <code>20</code>。</li>
@@ -426,7 +426,7 @@
 <li><code>MVCC</code> 既可以基于<strong>乐观锁</strong>又可以基于<strong>悲观锁</strong>来实现</li>
 </ol>
 <h3 id="InnoDB-MVCC-实现原理"><a href="#InnoDB-MVCC-实现原理" class="headerlink" title="InnoDB MVCC 实现原理"></a>InnoDB MVCC 实现原理</h3><p><code>InnoDB</code> 中 <code>MVCC</code> 的实现方式为：每一行记录都有两个隐藏列：<code>DATA_TRX_ID</code>、<code>DATA_ROLL_PTR</code>（如果没有主键，则还会多一个隐藏的主键列）。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/698983/1577876810150-684c753c-4073-4ed8-ab51-b8ba320827e8.jpeg" alt></p>
+<p><img src="https://gitee.com/wulling1024/Picture-bed/raw/master/img/20200516111754.png" alt></p>
 <h4 id="DATA-TRX-ID"><a href="#DATA-TRX-ID" class="headerlink" title="DATA_TRX_ID"></a>DATA_TRX_ID</h4><p>记录<strong>最近更新这条行记录</strong>的<code>事务 ID</code>，大小为 <code>6</code> 个字节</p>
 <h4 id="DATA-ROLL-PTR"><a href="#DATA-ROLL-PTR" class="headerlink" title="DATA_ROLL_PTR"></a>DATA_ROLL_PTR</h4><p>表示指向该行回滚段<code>（rollback segment）</code>的指针，大小为 <code>7</code> 个字节，<code>InnoDB</code> 便是通过这个指针找到之前版本的数据。该行记录上所有旧版本，在 <code>undo</code> 中都通过链表的形式组织。</p>
 <h4 id="DB-ROW-ID"><a href="#DB-ROW-ID" class="headerlink" title="DB_ROW_ID"></a>DB_ROW_ID</h4><p>行标识（隐藏单调自增 <code>ID</code>），大小为 <code>6</code> 字节，如果表没有主键，<code>InnoDB</code> 会自动生成一个隐藏主键，因此会出现这个列。另外，每条记录的头信息（<code>record header</code>）里都有一个专门的 <code>bit</code>（<code>deleted_flag</code>）来表示当前记录是否已经被删除。</p>
@@ -435,7 +435,7 @@
 </blockquote>
 <p>上文提到，在多个事务并行操作某行数据的情况下，不同事务对该行数据的 UPDATE 会产生多个版本，然后通过回滚指针组织成一条 <code>Undo Log</code> 链，这节我们通过一个简单的例子来看一下 <code>Undo Log</code> 链是如何组织的，<code>DATA_TRX_ID</code> 和 <code>DATA_ROLL_PTR</code> 两个参数在其中又起到什么样的作用。</p>
 <p>还是以上文 <code>MVCC</code> 的例子，事务 <code>A</code> 对值 <code>x</code> 进行更新之后，该行即产生一个新版本和旧版本。假设之前插入该行的事务 <code>ID</code> 为 <code>100</code>，事务 <code>A</code> 的 <code>ID</code> 为 <code>200</code>，该行的隐藏主键为 <code>1</code>。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/698983/1577876810087-11e2cb56-d459-4606-ae35-dc4bf0c52d2b.jpeg" alt></p>
+<p><img src="https://gitee.com/wulling1024/Picture-bed/raw/master/img/20200516111814.png" alt></p>
 <p>事务 <code>A</code> 的操作过程为：</p>
 <ol>
 <li>对 <code>DB_ROW_ID = 1</code> 的这行记录加<strong>排他锁</strong></li>
@@ -451,9 +451,9 @@
 <p><code>InnoDB</code> 为了解决这个问题，设计了 <code>ReadView</code>（可读视图）的概念。</p>
 <h4 id="RR-下的-ReadView-生成"><a href="#RR-下的-ReadView-生成" class="headerlink" title="RR 下的 ReadView 生成"></a>RR 下的 ReadView 生成</h4><p>在 <code>RR</code> 隔离级别下，每个事务 <code>touch first read</code> 时（本质上就是执行<strong>第一个 <code>SELECT</code> 语句</strong>时，后续所有的 <code>SELECT</code> 都是复用这个 <code>ReadView</code>，其它 <code>update</code>, <code>delete</code>, <code>insert</code> 语句和一致性读 <code>snapshot</code> 的建立没有关系），会将<strong>当前系统中的所有的活跃事务</strong>拷贝到一个列表生成<code>ReadView</code>。</p>
 <p>下图中事务 <code>A</code> 第一条 <code>SELECT</code> 语句在事务 <code>B</code> 更新数据前，因此生成的 <code>ReadView</code> 在事务 <code>A</code> 过程中不发生变化，即使事务 <code>B</code> 在事务 <code>A</code> 之前提交，但是事务 <code>A</code> 第二条查询语句依旧无法读到事务 <code>B</code> 的修改。</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/698983/1577876810103-bfe64655-d573-4660-979f-1cd79955dbc9.jpeg" alt></p>
+<p><img src="https://gitee.com/wulling1024/Picture-bed/raw/master/img/20200516111845.png" alt></p>
 <p>下图中，事务 <code>A</code> 的第一条 <code>SELECT</code> 语句在事务 <code>B</code> 的修改提交之后，因此可以读到事务 <code>B</code> 的修改。<strong>但是注意，如果事务 <code>A</code> 的第一条 <code>SELECT</code> 语句查询时，事务 <code>B</code> 还未提交，那么事务 <code>A</code> 也查不到事务 <code>B</code> 的修改。</strong></p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/698983/1577876810042-78fc724d-6d96-4144-b021-5a14f76746ab.jpeg" alt></p>
+<p><img src="https://gitee.com/wulling1024/Picture-bed/raw/master/img/20200516111909.png" alt></p>
 <h4 id="RC-下的-ReadView-生成"><a href="#RC-下的-ReadView-生成" class="headerlink" title="RC 下的 ReadView 生成"></a>RC 下的 ReadView 生成</h4><p>在 <code>RC</code> 隔离级别下，<strong>每个 <code>SELECT</code> 语句开始时</strong>，都会重新将当前系统中的所有的活跃事务拷贝到一个列表生成 <code>ReadView</code>。二者的区别就在于生成 <code>ReadView</code> 的时间点不同，一个是事务之后第一个 <code>SELECT</code> 语句开始、一个是事务中每条 <code>SELECT</code> 语句开始。</p>
 <p><code>ReadView</code> 中是当前活跃的事务 <code>ID</code> 列表，称之为 <code>m_ids</code>，其中最小值为 <code>up_limit_id</code>，最大值为 <code>low_limit_id</code>，事务 <code>ID</code> 是事务开启时 <code>InnoDB</code> 分配的，其大小决定了事务开启的先后顺序，因此我们可以通过 <code>ID</code> 的大小关系来决定版本记录的可见性，具体判断流程如下：</p>
 <ol>
@@ -462,17 +462,17 @@
 <li>如果被访问版本的 <code>trx_id</code> 属性值在 <code>m_ids</code> 列表中最大值和最小值之间（包含），那就需要判断一下 <code>trx_id</code> 的值是不是在 <code>m_ids</code> 列表中。如果在，说明创建 <code>ReadView</code> 时生成该版本所属事务还是活跃的，因此该版本不可以被访问，需要查找 Undo Log 链得到上一个版本，然后根据该版本的 <code>DB_TRX_ID</code> 再从头计算一次可见性；如果不在，说明创建 <code>ReadView</code> 时生成该版本的事务已经被提交，该版本可以被访问。</li>
 <li>此时经过一系列判断我们已经得到了这条记录相对 <code>ReadView</code> 来说的可见结果。此时，如果这条记录的 <code>delete_flag</code> 为 <code>true</code>，说明这条记录已被删除，不返回。否则说明此记录可以安全返回给客户端。</li>
 </ol>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/698983/1577876811865-aa08705a-7af7-46fa-8162-60d294765e21.jpeg?x-oss-process=image%2Fresize%2Cw_1500" alt></p>
+<p><img src="https://gitee.com/wulling1024/Picture-bed/raw/master/img/20200516111928.png" alt></p>
 <h3 id="举个例子"><a href="#举个例子" class="headerlink" title="举个例子"></a>举个例子</h3><h4 id="RC-下的-MVCC-判断流程"><a href="#RC-下的-MVCC-判断流程" class="headerlink" title="RC 下的 MVCC 判断流程"></a>RC 下的 MVCC 判断流程</h4><p>我们现在回看刚刚的查询过程，为什么事务 <code>B</code> 在 <code>RC</code> 隔离级别下，两次查询的 <code>x</code> 值不同。<code>RC</code> 下 <code>ReadView</code> 是在语句粒度上生成的。</p>
 <p>当事务 <code>A</code> 未提交时，事务 <code>B</code> 进行查询，假设事务 <code>B</code> 的事务 <code>ID</code> 为 <code>300</code>，此时生成 <code>ReadView</code> 的 <code>m_ids</code> 为 [200，300]，而最新版本的 <code>trx_id</code> 为 <code>200</code>，处于 <code>m_ids</code> 中，则该版本记录不可被访问，查询版本链得到上一条记录的 trx_id 为 <code>100</code>，小于 <code>m_ids</code> 的最小值 <code>200</code>，因此可以被访问，此时事务 <code>B</code> 就查询到值 <code>10</code> 而非 <code>20</code>。</p>
 <p>待事务 <code>A</code> 提交之后，事务 <code>B</code> 进行查询，此时生成的 <code>ReadView</code> 的 <code>m_ids</code> 为 [300]，而最新的版本记录中 <code>trx_id</code> 为 <code>200</code>，小于 <code>m_ids</code> 的最小值 <code>300</code>，因此可以被访问到，此时事务 <code>B</code> 就查询到 <code>20</code>。</p>
 <h4 id="RR-下的-MVCC-判断流程"><a href="#RR-下的-MVCC-判断流程" class="headerlink" title="RR 下的 MVCC 判断流程"></a>RR 下的 MVCC 判断流程</h4><p>如果在 <code>RR</code> 隔离级别下，为什么事务 <code>B</code> 前后两次均查询到 <code>10</code> 呢？<code>RR</code> 下生成 <code>ReadView</code> 是在事务开始时，m_ids 为 [200,300]，后面不发生变化，因此即使事务 <code>A</code> 提交了，<code>trx_id</code> 为 <code>200</code> 的记录依旧处于 <code>m_ids</code> 中，不能被访问，只能访问版本链中的记录 <code>10</code>。</p>
 <h4 id="一个争论点"><a href="#一个争论点" class="headerlink" title="一个争论点"></a>一个争论点</h4><p>其实并非所有的情况都能套用 <code>MVCC</code> 读的判断流程，<strong>特别是针对在事务进行过程中，另一个事务已经提交修改的情况下</strong>，这时不论是 <code>RC</code> 还是 <code>RR</code>，直接套用 <code>MVCC</code> 判断都会有问题，例如 <code>RC</code> 下：</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/698983/1577876810087-0754e86c-b2e9-4ad8-bb45-76eac1b70c55.jpeg" alt></p>
+<p><img src="https://gitee.com/wulling1024/Picture-bed/raw/master/img/20200516111959.png" alt></p>
 <p>事务 <code>A</code> 的 <code>trx_id = 200</code>，事务 <code>B</code> 的 <code>trx_id = 300</code>，且事务 <code>B</code> 修改了数据之后在事务 <code>A</code> 之前提交，此时 <code>RC</code> 下事务 <code>A</code> 读到的数据为事务 <code>B</code> 修改后的值，这是很显然的。下面我们套用下 <code>MVCC</code> 的判断流程，考虑到事务 <code>A</code> 第二次 <code>SELECT</code> 时，<code>m_ids</code> 应该为 [200]，此时该行数据最新的版本 <code>DATA_TRX_ID = 300</code> 比 <code>200</code> 大，照理应该不能被访问，但实际上事务 <code>A</code> 选取了这条记录返回。</p>
 <p>这里其实应该结合 <code>RC</code> 的本质来看，<code>RC</code> 的本质就是事务中每一条 <code>SELECT</code> 语句均可以看到其他已提交事务对数据的修改，那么只要该事物已经提交其结果就是可见的，与这两个事务开始的先后顺序无关，<strong>不完全适用于 MVCC 读</strong>。</p>
 <p><code>RR</code> 级别下还是用之前那张图：</p>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/jpeg/698983/1577876810060-c6912e7e-9135-40a1-996e-49224e7a9d9a.jpeg" alt></p>
+<p><img src="https://gitee.com/wulling1024/Picture-bed/raw/master/img/20200516112015.png" alt></p>
 <p>这张图的流程中，事务 <code>B</code> 的 <code>trx_id = 300</code> 比事务 <code>A</code> <code>200</code> 小，且事务 <code>B</code> 先于事务 <code>A</code> 提交，按照 <code>MVCC</code> 的判断流程，事务 <code>A</code> 生成的 <code>ReadView</code> 为 [200]，最新版本的行记录 <code>DATA_TRX_ID = 300</code> 比 <code>200</code> 大，照理不能访问到，但是事务 <code>A</code> 实际上读到了事务 <code>B</code> 已经提交的修改。这里还是结合 <code>RR</code> 本质进行解释，<code>RR</code> 的本质是从第一个 <code>SELECT</code> 语句生成 <code>ReadView</code> 开始，任何已经提交过的事务的修改均可见。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><code>RC</code>、<code>RR</code> 两种隔离级别的事务在执行普通的读操作时，通过访问版本链的方法，使得事务间的读写操作得以并发执行，从而提升系统性能。<code>RC</code>、<code>RR</code> 这两个隔离级别的一个很大不同就是生成 <code>ReadView</code> 的时间点不同，<code>RC</code> 在每一次 <code>SELECT</code> 语句前都会生成一个 <code>ReadView</code>，事务期间会更新，因此在其他事务提交前后所得到的 <code>m_ids</code> 列表可能发生变化，使得先前不可见的版本后续又突然可见了。而 <code>RR</code> 只在事务的第一个 <code>SELECT</code> 语句时生成一个 <code>ReadView</code>，事务操作期间不更新。</p>
 
@@ -953,7 +953,7 @@
 </div>
 
 <script src="/libs/valine/av-min.js"></script>
-<script src="/libs/valine/Valine.min.js"></script>
+<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
