@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>VS Code + Markdown 自定义文件头信息</title>
+      <link href="/2021/02/08/202102/vs-code-markdown-zi-ding-yi-wen-jian-tou-xin-xi/"/>
+      <url>/2021/02/08/202102/vs-code-markdown-zi-ding-yi-wen-jian-tou-xin-xi/</url>
+      
+        <content type="html"><![CDATA[<p>Visual Studio Code 默认是关闭了 Markdown 的智能感知提示的（因为真的是不好用，尤其是其没有中文分词的情况下）。那么在没有智能感知提示的情况下如何快速插入代码片段呢？</p><p>解决方案：<strong>自定义快捷键</strong></p><h4 id="1、打开快捷键的设置"><a href="#1、打开快捷键的设置" class="headerlink" title="1、打开快捷键的设置"></a>1、打开快捷键的设置</h4><h4 id="2、自定义如下代码片段"><a href="#2、自定义如下代码片段" class="headerlink" title="2、自定义如下代码片段"></a>2、自定义如下代码片段</h4><pre><code>{    &quot;key&quot;: &quot;alt+h&quot;,    &quot;command&quot;: &quot;editor.action.insertSnippet&quot;,    &quot;when&quot;: &quot;editorTextFocus&quot;,    &quot;args&quot;: {        &quot;langId&quot;: &quot;markdown&quot;,        &quot;name&quot;: &quot;Hexo file header&quot;    }  }</code></pre><ul><li>“langId”：文件类型信息</li><li>“name”：自定义代码片段的名称</li></ul><h4 id="3、测试"><a href="#3、测试" class="headerlink" title="3、测试"></a>3、测试</h4><p><img src="https://cdn.jsdelivr.net/gh/wulling1024/Picture-bed@master/img202102/20210208152716.gif" alt></p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>MVCC的实现机制</title>
       <link href="/2020/02/15/202002/shi-wu-zhong-mvcc-de-shi-xian-ji-zhi/"/>
       <url>/2020/02/15/202002/shi-wu-zhong-mvcc-de-shi-xian-ji-zhi/</url>
@@ -20,11 +33,11 @@
       
         <tags>
             
-            <tag> Transaction </tag>
-            
             <tag> Mysql </tag>
             
             <tag> InnoDB </tag>
+            
+            <tag> Transaction </tag>
             
         </tags>
       
@@ -101,9 +114,9 @@
       
         <tags>
             
-            <tag> Spring </tag>
-            
             <tag> Transaction </tag>
+            
+            <tag> Spring </tag>
             
         </tags>
       

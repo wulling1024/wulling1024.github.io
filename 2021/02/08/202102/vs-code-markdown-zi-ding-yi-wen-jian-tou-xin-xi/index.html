@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="Spring中的事务, WULLING">
+    <meta name="keywords" content="VS Code + Markdown 自定义文件头信息, WULLING">
     <meta name="description" content="道路对了，就不怕遥远">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Spring中的事务 | WULLING</title>
+    <title>VS Code + Markdown 自定义文件头信息 | WULLING</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -265,12 +265,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/42.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/34.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spring中的事务</h1>
+                    <h1 class="description center-align post-title">VS Code + Markdown 自定义文件头信息</h1>
                 </div>
             </div>
         </div>
@@ -393,29 +393,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/Transaction/">
-                                <span class="chip bg-color">Transaction</span>
-                            </a>
-                        
-                            <a href="/tags/Spring/">
-                                <span class="chip bg-color">Spring</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/后台框架/" class="post-category">
-                                后台框架
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -424,7 +407,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-02-06
+                    2021-02-08
                 </div>
                 
 
@@ -433,14 +416,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    922
+                    154
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    1 分
                 </div>
                 
 
@@ -450,95 +433,21 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="使用配置"><a href="#使用配置" class="headerlink" title="使用配置"></a>使用配置</h1><h2 id="1、事务管理机制"><a href="#1、事务管理机制" class="headerlink" title="1、事务管理机制"></a>1、事务管理机制</h2><p>事务管理在系统开发中是不可缺少的一部分，<code>Spring</code>提供了很好事务管理机制，主要分为<code>编程式事务</code>和<code>声明式事务</code>两种。</p>
-<p><strong>编程式事务</strong>：是指在代码中手动的管理事务的提交、回滚等操作，代码侵入性比较强，如下示例：</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token keyword">try</span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">//TODO something</span>
-     transactionManager<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    transactionManager<span class="token punctuation">.</span><span class="token function">rollback</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvoiceApplyException</span><span class="token punctuation">(</span><span class="token string">"异常失败"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><strong>声明式事务</strong>：基于<code>AOP</code>面向切面的，它将具体业务与事务处理部分解耦，代码侵入性很低，所以在实际开发中声明式事务用的比较多。声明式事务也有两种实现方式，一是基于<code>TX</code>和<code>AOP</code>的 xml 配置文件方式，二种就是基于@Transactional 注解了。</p>
-<pre class="line-numbers language-java"><code class="language-java"><span class="token annotation punctuation">@Transactional</span>
-<span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/test"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> String <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">int</span> insert <span class="token operator">=</span> cityInfoDictMapper<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>cityInfoDict<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="2、-Transaction-的作用范围"><a href="#2、-Transaction-的作用范围" class="headerlink" title="2、@Transaction 的作用范围"></a>2、@Transaction 的作用范围</h2><ul>
-<li><strong>作用于类</strong>：当把 @Transactional 注解放在类上时，表示所有该类的<code>public</code>方法都配置相同的事务属性信息。</li>
-<li><strong>作用于方法</strong>：当类配置了@Transactional，方法也配置了 @Transactional，<em>方法的事务会覆盖类的事务配置信息</em>。</li>
-<li><strong>作用于接口</strong>：不推荐这种使用方法，因为一旦标注在Interface上并且配置了 Spring AOP 使用 CGLib 动态代理，将会导致 @Transactional 注解失效</li>
+                <p>Visual Studio Code 默认是关闭了 Markdown 的智能感知提示的（因为真的是不好用，尤其是其没有中文分词的情况下）。那么在没有智能感知提示的情况下如何快速插入代码片段呢？</p>
+<p>解决方案：<strong>自定义快捷键</strong></p>
+<h4 id="1、打开快捷键的设置"><a href="#1、打开快捷键的设置" class="headerlink" title="1、打开快捷键的设置"></a>1、打开快捷键的设置</h4><h4 id="2、自定义如下代码片段"><a href="#2、自定义如下代码片段" class="headerlink" title="2、自定义如下代码片段"></a>2、自定义如下代码片段</h4><pre><code>{
+    &quot;key&quot;: &quot;alt+h&quot;,
+    &quot;command&quot;: &quot;editor.action.insertSnippet&quot;,
+    &quot;when&quot;: &quot;editorTextFocus&quot;,
+    &quot;args&quot;: {
+        &quot;langId&quot;: &quot;markdown&quot;,
+        &quot;name&quot;: &quot;Hexo file header&quot;
+    }
+  }</code></pre><ul>
+<li>“langId”：文件类型信息</li>
+<li>“name”：自定义代码片段的名称</li>
 </ul>
-<pre class="line-numbers language-java"><code class="language-java"> <span class="token annotation punctuation">@Transactional</span>
- <span class="token annotation punctuation">@RestController</span>
- <span class="token annotation punctuation">@RequestMapping</span>
- <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MybatisPlusController</span> <span class="token punctuation">{</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token keyword">private</span> CityInfoDictMapper cityInfoDictMapper<span class="token punctuation">;</span>
-
-    <span class="token annotation punctuation">@Transactional</span><span class="token punctuation">(</span>rollbackFor <span class="token operator">=</span> Exception<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/test"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> String <span class="token function">test</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> Exception <span class="token punctuation">{</span>
-        CityInfoDict cityInfoDict <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CityInfoDict</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        cityInfoDict<span class="token punctuation">.</span><span class="token function">setParentCityId</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        cityInfoDict<span class="token punctuation">.</span><span class="token function">setCityName</span><span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        cityInfoDict<span class="token punctuation">.</span><span class="token function">setCityLevel</span><span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        cityInfoDict<span class="token punctuation">.</span><span class="token function">setCityCode</span><span class="token punctuation">(</span><span class="token string">"2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> insert <span class="token operator">=</span> cityInfoDictMapper<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>cityInfoDict<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> insert <span class="token operator">+</span> <span class="token string">""</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="3、-Transaction-的参数介绍"><a href="#3、-Transaction-的参数介绍" class="headerlink" title="3、@Transaction 的参数介绍"></a>3、@Transaction 的参数介绍</h2><ul>
-<li><p><strong>propagation</strong> 属性：</p>
-<p><code>propagation</code> 代表事务的 <strong>传播行为</strong>，默认值为 <code>Propagation.REQUIRED</code>，其他的属性信息如下：</p>
-<ul>
-<li><p><code>Propagation.REQUIRED</code>：如果当前存在事务，则加入该事务，如果当前不存在事务，则创建一个新的事务。</p>
-<blockquote>
-<p><strong>(</strong> 也就是说如果A方法和B方法都添加了注解，在默认传播模式下，A方法内部调用B方法，会把两个方法的事务合并为一个事务 <strong>）</strong></p>
-</blockquote>
-</li>
-<li><p><code>Propagation.SUPPORTS</code>：如果当前存在事务，则加入该事务；如果当前不存在事务，则以非事务的方式继续运行。</p>
-</li>
-<li><p><code>Propagation.MANDATORY</code>：如果当前存在事务，则加入该事务；如果当前不存在事务，则抛出异常。</p>
-</li>
-<li><p><code>Propagation.REQUIRES_NEW</code>：重新创建一个新的事务，如果当前存在事务，暂停当前的事务。</p>
-<blockquote>
-<p><strong>(</strong> 当类A中的 a 方法用默认<code>Propagation.REQUIRED</code>模式，类B中的 b方法加上采用 <code>Propagation.REQUIRES_NEW</code>模式，然后在 a 方法中调用 b方法操作数据库，然而 a方法抛出异常后，b方法并没有进行回滚，因为<code>Propagation.REQUIRES_NEW</code>会暂停 a方法的事务 <strong>)</strong></p>
-</blockquote>
-</li>
-<li><p><code>Propagation.NOT_SUPPORTED</code>：以非事务的方式运行，如果当前存在事务，暂停当前的事务。</p>
-</li>
-<li><p><code>Propagation.NEVER</code>：以非事务的方式运行，如果当前存在事务，则抛出异常。</p>
-</li>
-<li><p><code>Propagation.NESTED</code> ：和 Propagation.REQUIRED 效果一样。</p>
-</li>
-</ul>
-</li>
-<li><p><strong>isolation</strong> 属性：</p>
-<p><code>isolation</code> ：事务的隔离级别，默认值为 <code>Isolation.DEFAULT</code>。</p>
-<ul>
-<li>Isolation.DEFAULT：使用底层数据库默认的隔离级别。</li>
-<li>Isolation.READ_UNCOMMITTED</li>
-<li>Isolation.READ_COMMITTED</li>
-<li>Isolation.REPEATABLE_READ</li>
-<li>Isolation.SERIALIZABLE</li>
-</ul>
-</li>
-<li><p><strong>timeout</strong> 属性：</p>
-<p>事务的超时时间，默认值为 -1。如果超过该时间限制但事务还没有完成，则自动回滚事务。</p>
-</li>
-<li><p><strong>readOnly</strong> 属性：</p>
-<p>指定事务是否为只读事务，默认值为 false；为了忽略那些不需要事务的方法，比如读取数据，可以设置 read-only 为 true。</p>
-</li>
-<li><p><strong>rollbackFor</strong> 属性：</p>
-<p>用于指定能够触发事务回滚的异常类型，可以指定多个异常类型。</p>
-</li>
-<li><p><strong>noRollbackFor</strong> 属性：</p>
-<p>抛出指定的异常类型，不回滚事务，也可以指定多个异常类型。</p>
-</li>
-</ul>
+<h4 id="3、测试"><a href="#3、测试" class="headerlink" title="3、测试"></a>3、测试</h4><p><img src="https://cdn.jsdelivr.net/gh/wulling1024/Picture-bed@master/img202102/20210208152716.gif" alt></p>
 
             </div>
             <hr/>
@@ -564,7 +473,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://wulling1024.github.io/2020/02/06/202002/spring-zhong-shi-yong-shi-wu-transaction/">https://wulling1024.github.io/2020/02/06/202002/spring-zhong-shi-yong-shi-wu-transaction/</a>
+                    <a href="https://wulling1024.github.io/2021/02/08/202102/vs-code-markdown-zi-ding-yi-wen-jian-tou-xin-xi/">https://wulling1024.github.io/2021/02/08/202102/vs-code-markdown-zi-ding-yi-wen-jian-tou-xin-xi/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -601,15 +510,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/Transaction/">
-                                    <span class="chip bg-color">Transaction</span>
-                                </a>
-                            
-                                <a href="/tags/Spring/">
-                                    <span class="chip bg-color">Spring</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -1038,55 +939,41 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/02/08/202002/wsl2-bao-cuo-can-kao-dui-xiang-lei-xing-bu-zhi-chi/">
+                <a href="/2021/02/08/202102/vs-code-markdown-zi-ding-yi-wen-jian-tou-xin-xi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/25.jpg" class="responsive-img" alt="WSL2报错：参考对象类型不支持尝试的操作">
+                        <img src="/medias/featureimages/34.jpg" class="responsive-img" alt="VS Code + Markdown 自定义文件头信息">
                         
-                        <span class="card-title">WSL2报错：参考对象类型不支持尝试的操作</span>
+                        <span class="card-title">VS Code + Markdown 自定义文件头信息</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-转载：Ryan（版权属于）
-本文链接：https://kkp.disk.st/4608.html
-
-突然发现WSL无法使用，Ubuntu无法启动
-PS C:\WINDOWS\system32> wsl.exe --shutdown
-PS 
+                            Visual Studio Code 默认是关闭了 Markdown 的智能感知提示的（因为真的是不好用，尤其是其没有中文分词的情况下）。那么在没有智能感知提示的情况下如何快速插入代码片段呢？
+解决方案：自定义快捷键
+1、打开快捷键的设置2
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-08
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-08
+                            </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Tools/" class="post-category">
-                                    Tools
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            wulling1024
                             
                         </span>
                     </div>
                 </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/WSL2/">
-                        <span class="chip bg-color">WSL2</span>
-                    </a>
-                    
-                </div>
+
                 
             </div>
         </div>
@@ -1097,31 +984,32 @@ PS
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/02/02/202002/hello-world/">
+                <a href="/2020/02/15/202002/shi-wu-zhong-mvcc-de-shi-xian-ji-zhi/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/24.jpg" class="responsive-img" alt="Hexo主题使用介绍">
+                        <img src="/medias/featureimages/29.jpg" class="responsive-img" alt="MVCC的实现机制">
                         
-                        <span class="card-title">Hexo主题使用介绍</span>
+                        <span class="card-title">MVCC的实现机制</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hex
+                            
+转载：https://www.yuque.com/chenjiayang/blog/dozcqo?utm_source=wechat_session&amp;utm_medium=social&amp;utm_oi=69851320453
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-02
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-15
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Tools/" class="post-category">
-                                    Tools
+                            <a href="/categories/数据库/" class="post-category">
+                                    数据库
                                 </a>
                             
                             
@@ -1131,8 +1019,16 @@ PS
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/Hexo模板/">
-                        <span class="chip bg-color">Hexo模板</span>
+                    <a href="/tags/Mysql/">
+                        <span class="chip bg-color">Mysql</span>
+                    </a>
+                    
+                    <a href="/tags/InnoDB/">
+                        <span class="chip bg-color">InnoDB</span>
+                    </a>
+                    
+                    <a href="/tags/Transaction/">
+                        <span class="chip bg-color">Transaction</span>
                     </a>
                     
                 </div>
