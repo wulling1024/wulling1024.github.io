@@ -33,6 +33,18 @@
 <link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
 
 
+
+   <style>
+    body{
+       background-image: url(https://cdn.jsdelivr.net/gh/wulling1024/Picture-bed@master/img202102/20210209171921.jpg);
+       background-repeat:no-repeat;
+       background-size:cover;
+       background-attachment:fixed;
+    }
+</style>
+
+
+
 <body>
     <header class="navbar-fixed">
     <nav id="headNav" class="bg-color nav-transparent">
@@ -265,7 +277,7 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/29.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/35.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
@@ -313,8 +325,7 @@
     }
 
     .toc-widget .toc-title {
-        margin: 35px 0 15px 0;
-        padding-left: 17px;
+        padding: 35px 0 15px 17px;
         font-size: 1.5rem;
         font-weight: bold;
         line-height: 1.5rem;
@@ -326,7 +337,7 @@
     }
 
     #toc-content {
-        height: calc(100vh - 250px);
+        padding-bottom: 30px;
         overflow: auto;
     }
 
@@ -353,16 +364,8 @@
         display: block;
     }
 
-    .toc-fixed .toc-link::before{
-        position: fixed!important;/*当toc的位置改为fixed时，.toc-link::before也要改为fixed*/
-    }
-
     #toc-content .is-active-link {
         color: #42b983;
-    }
-
-    #toc-content .is-active-link::before {
-        background-color: #42b983;
     }
 
     #floating-toc-btn {
@@ -433,6 +436,11 @@
                 
 
                 
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2020-05-16
+                </div>
+                
 
                 
                 <div class="info-break-policy">
@@ -452,6 +460,11 @@
             </div>
         </div>
         <hr class="clearfix">
+
+        
+
+        
+
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <blockquote>
@@ -539,6 +552,7 @@
 <p>这张图的流程中，事务 <code>B</code> 的 <code>trx_id = 300</code> 比事务 <code>A</code> <code>200</code> 小，且事务 <code>B</code> 先于事务 <code>A</code> 提交，按照 <code>MVCC</code> 的判断流程，事务 <code>A</code> 生成的 <code>ReadView</code> 为 [200]，最新版本的行记录 <code>DATA_TRX_ID = 300</code> 比 <code>200</code> 大，照理不能访问到，但是事务 <code>A</code> 实际上读到了事务 <code>B</code> 已经提交的修改。这里还是结合 <code>RR</code> 本质进行解释，<code>RR</code> 的本质是从第一个 <code>SELECT</code> 语句生成 <code>ReadView</code> 开始，任何已经提交过的事务的修改均可见。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><code>RC</code>、<code>RR</code> 两种隔离级别的事务在执行普通的读操作时，通过访问版本链的方法，使得事务间的读写操作得以并发执行，从而提升系统性能。<code>RC</code>、<code>RR</code> 这两个隔离级别的一个很大不同就是生成 <code>ReadView</code> 的时间点不同，<code>RC</code> 在每一次 <code>SELECT</code> 语句前都会生成一个 <code>ReadView</code>，事务期间会更新，因此在其他事务提交前后所得到的 <code>m_ids</code> 列表可能发生变化，使得先前不可见的版本后续又突然可见了。而 <code>RR</code> 只在事务的第一个 <code>SELECT</code> 语句时生成一个 <code>ReadView</code>，事务操作期间不更新。</p>
 
+                
             </div>
             <hr/>
 
@@ -553,7 +567,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://wulling1024.github.io" rel="external nofollow noreferrer">wulling1024</a>
+                    <a href="/about" rel="external nofollow noreferrer">wulling1024</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -576,7 +590,7 @@
                     本博客所有文章除特別声明外，均采用
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     许可协议。转载请注明来源
-                    <a href="https://wulling1024.github.io" target="_blank">wulling1024</a>
+                    <a href="/about" target="_blank">wulling1024</a>
                     !
                 </span>
             </div>
@@ -1016,7 +1030,7 @@
 </div>
 
 <script src="/libs/valine/av-min.js"></script>
-<script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+<script src="/libs/valine/Valine.min.js"></script>
 <script>
     new Valine({
         el: '#vcomments',
@@ -1031,6 +1045,13 @@
         placeholder: 'Please begin your performance'
     });
 </script>
+
+<!--酷Q推送-->
+
+
+    
+
+    
 
     
 
@@ -1049,7 +1070,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/34.jpg" class="responsive-img" alt="VS Code + Markdown 自定义文件头信息">
+                        <img src="/medias/featureimages/42.jpg" class="responsive-img" alt="VS Code + Markdown 自定义文件头信息">
                         
                         <span class="card-title">VS Code + Markdown 自定义文件头信息</span>
                     </div>
@@ -1057,9 +1078,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Visual Studio Code 默认是关闭了 Markdown 的智能感知提示的（因为真的是不好用，尤其是其没有中文分词的情况下）。那么在没有智能感知提示的情况下如何快速插入代码片段呢？
-解决方案：自定义快捷键
-1、打开快捷键的设置2
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1104,7 +1123,7 @@
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="PowerShell中提示无法执行Script">
+                        <img src="/medias/featureimages/31.jpg" class="responsive-img" alt="PowerShell中提示无法执行Script">
                         
                         <span class="card-title">PowerShell中提示无法执行Script</span>
                     </div>
@@ -1112,10 +1131,7 @@
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            问题描述：
-
-
-PowerShell’s execution policy is a safety feature that controls the conditions under which PowerShell loads conf
+                            
                         
                     </div>
                     <div class="publish-info">
@@ -1212,16 +1228,9 @@ PowerShell’s execution policy is a safety feature that controls the conditions
 <script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
 
 
-<!-- 代码块折行 -->
-
-<style type="text/css">
-code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
-</style>
-
-
     </div>
     <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
-        <div class="toc-widget">
+        <div class="toc-widget card" style="background-color: white;">
             <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
             <div id="toc-content"></div>
         </div>
@@ -1245,7 +1254,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             contentSelector: '#articleContent',
             headingsOffset: -($(window).height() * 0.4 - 45),
             collapseDepth: Number(''),
-            headingSelector: 'h1, h2, h3, h4, h5'
+            headingSelector: 'h1, h2, h3'
         });
 
         // modify the toc link href to support Chinese.
@@ -1257,7 +1266,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
 
         // modify the heading title id to support Chinese.
         i = 0;
-        $('#articleContent').children('h1, h2, h3, h4, h5').each(function () {
+        $('#articleContent').children('h1, h2, h3').each(function () {
             $(this).attr('id', tocHeading + (++i));
         });
 
@@ -1325,6 +1334,9 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     <div class="container row center-align" style="margin-bottom: 15px !important;">
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
+            
+                <span id="year">2020-2021</span>
+            
             <span id="year">2020</span>
             <a href="https://wulling1024.github.io" target="_blank">wulling1024</a>
             |&nbsp;Powered by&nbsp;<a href="https://wulling1024.github.io/" target="_blank">Hexo</a>
@@ -1442,10 +1454,95 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
     </div>
 </div>
 
-<script src="/js/search.js"></script>
 <script type="text/javascript">
 $(function () {
-    searchFunc("/search.xml", 'searchInput', 'searchResult');
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
 });
 </script>
 
@@ -1483,8 +1580,6 @@ $(function () {
 </script>
 
     
-    <script src="/libs/others/clicklove.js" async="async"></script>
-    
     
     <script async src="/libs/others/busuanzi.pure.mini.js"></script>
     
@@ -1493,6 +1588,8 @@ $(function () {
 
     
 
+    <!--腾讯兔小巢-->
+    
     
 
     
